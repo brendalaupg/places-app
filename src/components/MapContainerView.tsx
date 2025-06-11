@@ -1,6 +1,6 @@
 import MapView from "react-native-maps";
-import { StyleSheet, Text } from "react-native";
-import { useRef } from "react";
+import { Keyboard, StyleSheet, Text } from "react-native";
+import { memo, useRef } from "react";
 
 const MapContainerView = () => {
   const mapViewRef = useRef<MapView | undefined>(undefined);
@@ -16,11 +16,18 @@ const MapContainerView = () => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }}
+      onMapLoaded={(event) => {
+        console.log("map has loaded");
+      }}
+      loadingEnabled={true}
+      onTouchStart={() => {
+        Keyboard.dismiss();
+      }}
     />
   );
 };
 
-export default MapContainerView;
+export default memo(MapContainerView);
 
 const styles = StyleSheet.create({
   mapView: {
