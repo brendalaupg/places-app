@@ -17,9 +17,14 @@ const SearchInput = () => {
 
   useEffect(() => {
     return () => {
-      debounceSearch.cancel(); // prevent memory leaks
+      // prevent memory leaks
+      debounceSearch.cancel();
     };
   }, [debounceSearch]);
+
+  const onPressClear = () => {
+    setQuery("");
+  };
 
   return (
     <View style={styles.container}>
@@ -30,6 +35,9 @@ const SearchInput = () => {
         placeholder={"Search..."}
         prefix={<Icon name={"search"} size={"md"} />}
         type={"text"}
+        suffix={
+          query && <Icon name={"close"} size={"md"} onPress={onPressClear} />
+        }
       />
     </View>
   );
