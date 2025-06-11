@@ -1,1 +1,5 @@
-declare namespace places {}
+declare namespace places {
+  interface State {
+    searchHistory: string[];
+  }
+}

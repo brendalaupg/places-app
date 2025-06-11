@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import MapScreen from "./src/screens/MapScreen";
 import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
-import { Provider } from "@ant-design/react-native";
+import { Provider as AntDesignProvider } from "@ant-design/react-native";
 import { Locale } from "@ant-design/react-native/lib/locale-provider";
+import { Provider } from "react-redux";
+import { rootStore } from "./src/store";
 
 const CURRENT_LOCALE: Partial<Locale> = enUS;
 
 const App = () => {
   return (
-    <Provider locale={CURRENT_LOCALE}>
-      <MapScreen />
+    <Provider store={rootStore}>
+      <AntDesignProvider locale={CURRENT_LOCALE}>
+        <MapScreen />
+      </AntDesignProvider>
     </Provider>
   );
 };
