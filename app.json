@@ -13,14 +13,22 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "process.env.PLACES_API_KEY"
+      },
+      "bundleIdentifier": "com.brendalaupg.placesapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "googleMaps": {
+          "apiKey": "process.env.PLACES_API_KEY"
+        }
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.brendalaupg.placesapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
