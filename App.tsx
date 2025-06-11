@@ -1,9 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import MapScreen from "./src/screens/MapScreen";
+import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
+import { Provider } from "@ant-design/react-native";
 
 const App = () => {
-  return <MapScreen />;
+  return (
+    <Provider locale={enUS}>
+      <MapScreen />;
+    </Provider>
+  );
 };
 
 const styles = StyleSheet.create({
