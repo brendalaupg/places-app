@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  memo,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { Dispatch, memo, SetStateAction } from "react";
 import { ActivityIndicator, Icon, Input, View } from "@ant-design/react-native";
 import { StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
@@ -40,9 +34,6 @@ const SearchInput = (props: SearchInputProps) => {
   return (
     <View style={styles.container}>
       <Input
-        onFocus={(e) => {
-          setIsSearching(true);
-        }}
         onSubmitEditing={() => {
           onSubmitInput(query);
           setIsSearching(false);
@@ -50,6 +41,9 @@ const SearchInput = (props: SearchInputProps) => {
         defaultValue={query}
         inputStyle={styles.inputStyle}
         onChangeText={(text: string) => {
+          if (text && !isSearching) {
+            setIsSearching(true);
+          }
           setQuery(text);
           onPressSearch(text);
         }}
@@ -59,7 +53,10 @@ const SearchInput = (props: SearchInputProps) => {
             name={isSearching ? "arrow-left" : "search"}
             size={"md"}
             onPress={() => {
-              setIsSearching(false);
+              if (isSearching) {
+                setIsSearching(false);
+                setQuery("");
+              }
             }}
           />
         }

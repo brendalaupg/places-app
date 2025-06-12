@@ -72,6 +72,9 @@ export const placeSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    clearSearchPlaces: (state) => {
+      state.places = [];
+    },
   },
 });
 
@@ -86,6 +89,7 @@ export const {
   startSearchPlace,
   searchPlaceSuccess,
   searchPlaceError,
+  clearSearchPlaces,
 } = placeSlice.actions;
 export const placeReducer = placeSlice.reducer;
 

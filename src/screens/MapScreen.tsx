@@ -17,8 +17,8 @@ import SuggestionList from "../components/SuggestionList";
 import { getPredictedText } from "../utils/placeUtils";
 
 const INITIAL_REGION: Region = {
-  latitude: 37.78825,
-  longitude: -122.4324,
+  latitude: 3.148,
+  longitude: 101.7003,
   latitudeDelta: 0.04,
   longitudeDelta: 0.05,
 };
@@ -32,9 +32,9 @@ const MapScreen = () => {
   const [query, setQuery] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const hasSuggestions = suggestions.length > 0;
-  const hasHistory = searchHistory.length > 0;
-  const isQueryEmpty = query.trim().length === 0;
+  const hasSuggestions = !!suggestions.length;
+  const hasHistory = !!searchHistory.length;
+  const isQueryEmpty = !query.trim().length;
 
   const showSearchHistory = isSearching && isQueryEmpty && hasHistory;
   const showSuggestionsList = isSearching && !isQueryEmpty && hasSuggestions;

@@ -18,7 +18,6 @@ const SearchHistory = (props: SearchHistoryProps) => {
   const dispatch = useDispatch();
 
   const onPressClear = (index: number) => {
-    console.log("remove!");
     dispatch(removeSearchHistory(index));
   };
 

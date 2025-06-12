@@ -3,13 +3,16 @@ import rootStore, { RootState } from "../../root";
 
 const state = (state: RootState) => state.place;
 
-const searchHistory = createSelector(state, (state) => state.searchHistory);
+const searchHistory = createSelector(
+  state,
+  (state) => state.searchHistory ?? []
+);
 
-const suggestions = createSelector(state, (state) => state.suggestions);
+const suggestions = createSelector(state, (state) => state.suggestions ?? []);
 
 const loading = createSelector(state, (state) => state.loading);
 
-const places = createSelector(state, (state) => state.places);
+const places = createSelector(state, (state) => state.places ?? []);
 
 export const PlaceSelectors = {
   suggestions,

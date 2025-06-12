@@ -81,7 +81,6 @@ export const searchTextEpic: Epic<PlacesActions, PlacesActions, RootState> = (
   action$.pipe(
     ofType(startSearchPlace.type),
     switchMap((action) => {
-      console.log("test here");
       return ajax({
         url: ROUTES.searchText,
         method: "POST",
