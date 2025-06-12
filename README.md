@@ -7,7 +7,7 @@
 
 # Setup
 
-- obtain a GOOGLE_PLACES_API_KEY with [this](https://developers.google.com/maps/documentation/places/web-service/cloud-setup) setup
+- obtain a PLACES_API_KEY with [this](https://developers.google.com/maps/documentation/places/web-service/cloud-setup) setup and add it as `EXPO_PUBLIC_PLACES_API_KEY` in your .env.local file. see .env.example
 
 # How to Run
 
