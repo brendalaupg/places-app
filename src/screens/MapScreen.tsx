@@ -89,14 +89,15 @@ const MapScreen = () => {
             onPressClear={clearQuery}
             onSubmitInput={(text) => {
               dispatch(addSearchHistory(text));
+              dispatch(startSearchPlace(text));
             }}
             setIsSearching={setIsSearching}
             setQuery={setQuery}
           />
-          {showSearchHistory && <SearchHistory onPressHistory={searchQuery} />}
+          {/* {showSearchHistory && <SearchHistory onPressHistory={searchQuery} />}
           {showSuggestionsList && (
             <SuggestionList onPressSuggestion={onPressSuggestion} />
-          )}
+          )} */}
         </SafeAreaView>
       </View>
     </>

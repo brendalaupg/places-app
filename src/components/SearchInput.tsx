@@ -5,8 +5,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Icon, Input, View } from "@ant-design/react-native";
+import { ActivityIndicator, Icon, Input, View } from "@ant-design/react-native";
 import { StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 interface SearchInputProps {
   query: string;
@@ -27,6 +29,8 @@ const SearchInput = (props: SearchInputProps) => {
     query,
     setQuery,
   } = props;
+
+  const isLoading = useSelector(PlaceSelectors.loading);
 
   const onPressClear = () => {
     setQuery("");
@@ -61,7 +65,12 @@ const SearchInput = (props: SearchInputProps) => {
         }
         type={"text"}
         suffix={
-          query && <Icon name={"close"} size={"md"} onPress={onPressClear} />
+          query && (
+            <View style={styles.suffixContainer}>
+              {isLoading && <ActivityIndicator />}
+              <Icon name={"close"} size={"md"} onPress={onPressClear} />
+            </View>
+          )
         }
       />
     </View>
@@ -81,5 +90,10 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     backgroundColor: "white",
+  },
+  suffixContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
   },
 });

@@ -13,22 +13,13 @@ const MapContainerView = (props: MapContainerViewProps) => {
   const { initialRegion, onRegionChange } = props;
   const mapViewRef = useRef<MapView | undefined>(undefined);
 
-  const renderSuggestionsMarker = () => (
-    <Marker
-      coordinate={{
-        latitude: initialRegion.latitude,
-        longitude: initialRegion.longitude,
-      }}
-      title={"test"}
-      description="description"
-      onCalloutPress={(event) => {
-        console.log("oncalloutpres");
-      }}
-      onSelect={() => {
-        console.log("onselect");
-      }}
-    />
-  );
+  const places = useSelector(PlaceSelectors.places);
+
+  const renderMarker = (item: places.Place, index: number) => {
+    const { id, location, displayName } = item;
+
+    return <Marker key={id} coordinate={location} title={displayName.text} />;
+  };
 
   return (
     <MapView
@@ -44,7 +35,7 @@ const MapContainerView = (props: MapContainerViewProps) => {
         Keyboard.dismiss();
       }}
     >
-      {renderSuggestionsMarker()}
+      {places.map(renderMarker)}
     </MapView>
   );
 };

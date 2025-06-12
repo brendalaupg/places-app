@@ -89,7 +89,7 @@ export const searchTextEpic: Epic<PlacesActions, PlacesActions, RootState> = (
           "Content-Type": "application/json",
           "X-Goog-Api-Key": process.env.EXPO_PUBLIC_PLACES_API_KEY,
           "X-Goog-FieldMask":
-            "places.displayName,places.formattedAddress,places.location",
+            "places.attributions,places.id,places.displayName,places.formattedAddress,places.location",
         },
         body: {
           textQuery: action.payload,
@@ -101,8 +101,8 @@ export const searchTextEpic: Epic<PlacesActions, PlacesActions, RootState> = (
             JSON.stringify(response.response, null, 2)
           )
         ),
-        map((response: AjaxResponse<places.Place[]>) =>
-          searchPlaceSuccess(response.response)
+        map((response: AjaxResponse<places.TextSearchResponse>) =>
+          searchPlaceSuccess(response.response.places)
         ),
         catchError((error: any) =>
           of(

@@ -9,8 +9,11 @@ const suggestions = createSelector(state, (state) => state.suggestions);
 
 const loading = createSelector(state, (state) => state.loading);
 
+const places = createSelector(state, (state) => state.places);
+
 export const PlaceSelectors = {
   suggestions,
   searchHistory,
   loading,
+  places,
 };

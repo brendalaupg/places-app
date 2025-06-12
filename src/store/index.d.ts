@@ -7,8 +7,20 @@ declare namespace places {
     error: string | undefined;
   }
 
+  interface DisplayName {
+    text: string;
+    languageCode: string;
+  }
+
+  interface TextSearchResponse {
+    places: Place[];
+  }
+
   interface Place {
-    placeId: string;
+    id: string;
+    formattedAddress: string;
+    location: Coordinates;
+    displayName: DisplayName;
   }
 
   // autocomplete payload
