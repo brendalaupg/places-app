@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import SearchInput from "../components/SearchInput";
 import MapContainerView from "../components/MapContainerView";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearAutocomplete,
   startAutoComplete,
 } from "../store/reducers/placeSlice";
 import { Region } from "react-native-maps";
+import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 const INITIAL_REGION: Region = {
   latitude: 37.78825,
@@ -21,6 +22,9 @@ const MapScreen = () => {
   const dispatch = useDispatch();
 
   const [region, setRegion] = useState<Region>(INITIAL_REGION);
+
+  const suggestions = useSelector(PlaceSelectors.suggestions);
+  console.log(suggestions);
 
   const searchQuery = (text: string) => {
     dispatch(
