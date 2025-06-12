@@ -4,7 +4,7 @@ import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
 import { Provider as AntDesignProvider } from "@ant-design/react-native";
 import { Locale } from "@ant-design/react-native/lib/locale-provider";
 import { Provider } from "react-redux";
-import { rootStore } from "./src/store";
+import rootStore from "./src/root";
 
 const CURRENT_LOCALE: Partial<Locale> = enUS;
 
