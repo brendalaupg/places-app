@@ -1,24 +1,35 @@
 import { Text, StyleSheet } from "react-native";
 import React from "react";
-import { ListView, View } from "@ant-design/react-native";
+import { Button, Icon, List, ListView, View } from "@ant-design/react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { removeSearchHistory } from "../store/reducers/placeSlice";
+import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 const SearchHistory = () => {
+  const dispatch = useDispatch();
+
+  const historyList = useSelector(PlaceSelectors.searchHistory);
+
+  const onPressClear = (index: number) => {
+    console.log("remove!");
+    dispatch(removeSearchHistory(index));
+  };
+
+  const renderClearButton = (index: number) => (
+    <Button size={"small"}>
+      <Icon name={"close"} onPress={() => onPressClear(index)} />
+    </Button>
+  );
+
   const renderItem = (item, index) => (
-    <View style={{ padding: 10 }}>
-      <Text>{item}</Text>
-    </View>
+    <List.Item key={index} extra={renderClearButton(0)}>
+      {item}
+    </List.Item>
   );
 
   return (
     <View style={styles.container}>
-      <ListView
-        onFetch={(currentPage, startFetch, abortFetch) => {
-          startFetch(["hi", "test"], 1);
-        }}
-        keyExtractor={(_, index) => `history-item-${index}`}
-        renderItem={renderItem}
-        numColumns={1}
-      />
+      <List>{historyList.map(renderItem)}</List>
     </View>
   );
 };

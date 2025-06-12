@@ -15,6 +15,14 @@ export const placeSlice = createSlice({
     addSearchHistory: (state, action: PayloadAction<string>) => {
       state.searchHistory = [action.payload].concat(state.searchHistory);
     },
+    removeSearchHistory: (state, action: PayloadAction<number>) => {
+      const indexToRemove = action.payload;
+      const history = state.searchHistory;
+      state.searchHistory = [
+        ...history.slice(0, indexToRemove),
+        ...history.slice(indexToRemove + 1),
+      ];
+    },
     clearSearchHistory: (state) => {
       state.searchHistory = [];
     },
@@ -45,6 +53,7 @@ export const placeSlice = createSlice({
 
 export const {
   addSearchHistory,
+  removeSearchHistory,
   clearSearchHistory,
   startAutoComplete,
   autocompleteSuccess,

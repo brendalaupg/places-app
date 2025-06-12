@@ -5,10 +5,11 @@ import { StyleSheet } from "react-native";
 interface SearchInputProps {
   onPressSearch: (text: string) => void;
   onPressClear: () => void;
+  onSubmitInput: (text: string) => void;
 }
 
 const SearchInput = (props: SearchInputProps) => {
-  const { onPressSearch } = props;
+  const { onPressSearch, onSubmitInput } = props;
   const [query, setQuery] = useState<string>("");
 
   const onPressClear = () => {
@@ -19,6 +20,7 @@ const SearchInput = (props: SearchInputProps) => {
   return (
     <View style={styles.container}>
       <Input
+        onSubmitEditing={() => onSubmitInput(query)}
         defaultValue={query}
         inputStyle={styles.inputStyle}
         onChangeText={(text: string) => {

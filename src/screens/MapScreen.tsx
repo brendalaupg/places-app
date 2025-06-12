@@ -5,11 +5,13 @@ import SearchInput from "../components/SearchInput";
 import MapContainerView from "../components/MapContainerView";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addSearchHistory,
   clearAutocomplete,
   startAutoComplete,
 } from "../store/reducers/placeSlice";
 import { Region } from "react-native-maps";
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
+import SearchHistory from "../components/SearchHistory";
 
 const INITIAL_REGION: Region = {
   latitude: 37.78825,
@@ -27,6 +29,7 @@ const MapScreen = () => {
   console.log(suggestions);
 
   const searchQuery = (text: string) => {
+    console.log(text);
     dispatch(
       startAutoComplete({
         input: text,
@@ -54,11 +57,20 @@ const MapScreen = () => {
 
   return (
     <>
-      <MapContainerView onRegionChange={onRegionChange} />
+      <MapContainerView
+        onRegionChange={onRegionChange}
+        initialRegion={INITIAL_REGION}
+      />
       <View style={styles.searchContainer}>
         <SafeAreaView>
-          <SearchInput onPressSearch={searchQuery} onPressClear={clearQuery} />
-          {/* <SearchHistory /> */}
+          <SearchInput
+            onPressSearch={searchQuery}
+            onPressClear={clearQuery}
+            onSubmitInput={(text) => {
+              dispatch(addSearchHistory(text));
+            }}
+          />
+          <SearchHistory />
         </SafeAreaView>
       </View>
     </>
