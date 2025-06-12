@@ -1,6 +1,8 @@
-import MapView, { Region } from "react-native-maps";
+import MapView, { Marker, Region } from "react-native-maps";
 import { Keyboard, StyleSheet, Text } from "react-native";
 import { memo, useRef } from "react";
+import { useSelector } from "react-redux";
+import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 interface MapContainerViewProps {
   initialRegion: Region;
@@ -10,6 +12,26 @@ interface MapContainerViewProps {
 const MapContainerView = (props: MapContainerViewProps) => {
   const { initialRegion, onRegionChange } = props;
   const mapViewRef = useRef<MapView | undefined>(undefined);
+
+  const suggestions = useSelector(PlaceSelectors.suggestions);
+  // console.log("suggestions", suggestions);
+
+  const renderSuggestionsMarker = () => (
+    <Marker
+      coordinate={{
+        latitude: initialRegion.latitude,
+        longitude: initialRegion.longitude,
+      }}
+      title={"test"}
+      description="description"
+      onCalloutPress={(event) => {
+        console.log("oncalloutpres");
+      }}
+      onSelect={() => {
+        console.log("onselect");
+      }}
+    />
+  );
 
   return (
     <MapView
@@ -24,7 +46,9 @@ const MapContainerView = (props: MapContainerViewProps) => {
       onTouchStart={() => {
         Keyboard.dismiss();
       }}
-    />
+    >
+      {renderSuggestionsMarker()}
+    </MapView>
   );
 };
 
