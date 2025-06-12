@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "process.env.PLACES_API_KEY"
+        "googleMapsApiKey": "process.env.EXPO_PUBLIC_PLACES_API_KEY"
       },
       "bundleIdentifier": "com.brendalaupg.placesapp"
     },
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "googleMaps": {
-          "apiKey": "process.env.PLACES_API_KEY"
+          "apiKey": "process.env.EXPO_PUBLIC_PLACES_API_KEY"
         }
       },
       "edgeToEdgeEnabled": true,

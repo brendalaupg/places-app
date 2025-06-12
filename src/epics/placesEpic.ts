@@ -31,7 +31,7 @@ export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Goog-Api-Key": process.env.PLACES_API_KEY || "",
+          "X-Goog-Api-Key": process.env.EXPO_PUBLIC_PLACES_API_KEY,
         },
         body: requestBody,
       }).pipe(

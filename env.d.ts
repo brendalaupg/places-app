@@ -1,5 +1,5 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    PLACES_API_KEY: string;
+    EXPO_PUBLIC_PLACES_API_KEY: string;
   }
 }
