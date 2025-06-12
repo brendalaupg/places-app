@@ -37,6 +37,9 @@ export const placeSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    clearAutocomplete: (state) => {
+      state.suggestions = [];
+    },
   },
 });
 
@@ -46,6 +49,7 @@ export const {
   startAutoComplete,
   autocompleteSuccess,
   autocompleteError,
+  clearAutocomplete,
 } = placeSlice.actions;
 export const placeReducer = placeSlice.reducer;
 

@@ -1,8 +1,13 @@
-import MapView from "react-native-maps";
+import MapView, { Region } from "react-native-maps";
 import { Keyboard, StyleSheet, Text } from "react-native";
 import { memo, useRef } from "react";
 
-const MapContainerView = () => {
+interface MapContainerViewProps {
+  onRegionChange: (region: Region) => void;
+}
+
+const MapContainerView = (props: MapContainerViewProps) => {
+  const { onRegionChange } = props;
   const mapViewRef = useRef<MapView | undefined>(undefined);
 
   return (
@@ -13,10 +18,13 @@ const MapContainerView = () => {
       initialRegion={{
         latitude: 37.78825,
         longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.04,
+        longitudeDelta: 0.05,
       }}
-      onMapLoaded={(event) => {
+      onRegionChangeComplete={(region: Region) => {
+        onRegionChange(region);
+      }}
+      onMapLoaded={() => {
         console.log("map has loaded");
       }}
       loadingEnabled={true}

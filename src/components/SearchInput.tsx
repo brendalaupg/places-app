@@ -1,29 +1,19 @@
 import React, { memo, useEffect, useState } from "react";
 import { Icon, Input, View } from "@ant-design/react-native";
-import debounce from "lodash/debounce";
 import { StyleSheet } from "react-native";
 
-const DEBOUNCE_MS: number = 500;
+interface SearchInputProps {
+  onPressSearch: (text: string) => void;
+  onPressClear: () => void;
+}
 
-const SearchInput = () => {
+const SearchInput = (props: SearchInputProps) => {
+  const { onPressSearch } = props;
   const [query, setQuery] = useState<string>("");
-
-  const search = (value: string) => {
-    console.log("value:", value);
-    setQuery(value);
-  };
-
-  const debounceSearch = debounce(search, DEBOUNCE_MS);
-
-  useEffect(() => {
-    return () => {
-      // prevent memory leaks
-      debounceSearch.cancel();
-    };
-  }, [debounceSearch]);
 
   const onPressClear = () => {
     setQuery("");
+    props.onPressClear();
   };
 
   return (
@@ -31,7 +21,10 @@ const SearchInput = () => {
       <Input
         defaultValue={query}
         inputStyle={styles.inputStyle}
-        onChangeText={debounceSearch}
+        onChangeText={(text: string) => {
+          setQuery(text);
+          onPressSearch(text);
+        }}
         placeholder={"Search..."}
         prefix={<Icon name={"search"} size={"md"} />}
         type={"text"}
