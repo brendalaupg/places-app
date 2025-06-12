@@ -20,9 +20,6 @@ const MapContainerView = (props: MapContainerViewProps) => {
       onRegionChangeComplete={(region: Region) => {
         onRegionChange(region);
       }}
-      onMapLoaded={() => {
-        console.log("map has loaded");
-      }}
       loadingEnabled={true}
       onTouchStart={() => {
         Keyboard.dismiss();

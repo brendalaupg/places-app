@@ -24,6 +24,10 @@ const MapScreen = () => {
   const dispatch = useDispatch();
 
   const [region, setRegion] = useState<Region>(INITIAL_REGION);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const searchHistory = useSelector(PlaceSelectors.searchHistory);
+
+  const showSearchHistory = isSearching && !!searchHistory.length;
 
   const suggestions = useSelector(PlaceSelectors.suggestions);
   console.log(suggestions);
@@ -64,13 +68,15 @@ const MapScreen = () => {
       <View style={styles.searchContainer}>
         <SafeAreaView>
           <SearchInput
+            isSearching={isSearching}
             onPressSearch={searchQuery}
             onPressClear={clearQuery}
             onSubmitInput={(text) => {
               dispatch(addSearchHistory(text));
             }}
+            setIsSearching={setIsSearching}
           />
-          <SearchHistory />
+          {showSearchHistory && <SearchHistory />}
         </SafeAreaView>
       </View>
     </>

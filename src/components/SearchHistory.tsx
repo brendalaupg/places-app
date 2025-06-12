@@ -1,8 +1,11 @@
 import { Text, StyleSheet } from "react-native";
 import React from "react";
-import { Button, Icon, List, ListView, View } from "@ant-design/react-native";
+import { Button, Icon, List, View } from "@ant-design/react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { removeSearchHistory } from "../store/reducers/placeSlice";
+import {
+  clearSearchHistory,
+  removeSearchHistory,
+} from "../store/reducers/placeSlice";
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 const SearchHistory = () => {
@@ -13,6 +16,10 @@ const SearchHistory = () => {
   const onPressClear = (index: number) => {
     console.log("remove!");
     dispatch(removeSearchHistory(index));
+  };
+
+  const onPressClearAll = () => {
+    dispatch(clearSearchHistory());
   };
 
   const renderClearButton = (index: number) => (
@@ -29,7 +36,7 @@ const SearchHistory = () => {
 
   return (
     <View style={styles.container}>
-      <List>{historyList.map(renderItem)}</List>
+      <List renderHeader={"Search History"}>{historyList.map(renderItem)}</List>
     </View>
   );
 };
