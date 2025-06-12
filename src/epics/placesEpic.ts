@@ -1,6 +1,6 @@
 import { Epic, ofType } from "redux-observable";
 import { RootState } from "../root";
-import { catchError, map, of, switchMap } from "rxjs";
+import { catchError, debounceTime, filter, map, of, switchMap } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import {
   autocompleteError,
@@ -11,12 +11,15 @@ import {
 
 const PLACES_API_BASE_URL =
   "https://places.googleapis.com/v1/places:autocomplete";
+const DEBOUNCE_TIME_MS = 500;
 
 export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
   action$
 ) =>
   action$.pipe(
     ofType(startAutoComplete.type),
+    filter((action) => action.payload.input.length > 1),
+    debounceTime(DEBOUNCE_TIME_MS),
     switchMap((action) => {
       const { input, locationRestriction } = action.payload;
 

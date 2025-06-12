@@ -59,6 +59,10 @@ const MapScreen = () => {
     setRegion(region);
   };
 
+  const onPressHistory = (text: string) => {
+    onPressHistory;
+  };
+
   return (
     <>
       <MapContainerView
@@ -76,7 +80,7 @@ const MapScreen = () => {
             }}
             setIsSearching={setIsSearching}
           />
-          {showSearchHistory && <SearchHistory />}
+          {showSearchHistory && <SearchHistory onPressHistory={searchQuery} />}
         </SafeAreaView>
       </View>
     </>

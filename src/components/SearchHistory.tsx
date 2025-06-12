@@ -8,7 +8,12 @@ import {
 } from "../store/reducers/placeSlice";
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
-const SearchHistory = () => {
+interface SearchHistoryProps {
+  onPressHistory: (text: string) => void;
+}
+
+const SearchHistory = (props: SearchHistoryProps) => {
+  const { onPressHistory } = props;
   const dispatch = useDispatch();
 
   const historyList = useSelector(PlaceSelectors.searchHistory);
@@ -28,8 +33,12 @@ const SearchHistory = () => {
     </Button>
   );
 
-  const renderItem = (item, index) => (
-    <List.Item key={index} extra={renderClearButton(0)}>
+  const renderItem = (item: string, index: number) => (
+    <List.Item
+      onPress={() => onPressHistory(item)}
+      key={index}
+      extra={renderClearButton(0)}
+    >
       {item}
     </List.Item>
   );
@@ -44,9 +53,8 @@ const SearchHistory = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    height: 400,
+    height: "100%",
     width: "100%",
-    borderRadius: 32,
   },
 });
 
