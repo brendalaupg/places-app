@@ -13,9 +13,6 @@ const MapContainerView = (props: MapContainerViewProps) => {
   const { initialRegion, onRegionChange } = props;
   const mapViewRef = useRef<MapView | undefined>(undefined);
 
-  const suggestions = useSelector(PlaceSelectors.suggestions);
-  // console.log("suggestions", suggestions);
-
   const renderSuggestionsMarker = () => (
     <Marker
       coordinate={{

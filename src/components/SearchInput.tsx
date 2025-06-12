@@ -9,16 +9,24 @@ import { Icon, Input, View } from "@ant-design/react-native";
 import { StyleSheet } from "react-native";
 
 interface SearchInputProps {
+  query: string;
   isSearching: boolean;
   onPressSearch: (text: string) => void;
   onPressClear: () => void;
   onSubmitInput: (text: string) => void;
   setIsSearching: Dispatch<SetStateAction<boolean>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 const SearchInput = (props: SearchInputProps) => {
-  const { isSearching, onPressSearch, onSubmitInput, setIsSearching } = props;
-  const [query, setQuery] = useState<string>("");
+  const {
+    isSearching,
+    onPressSearch,
+    onSubmitInput,
+    setIsSearching,
+    query,
+    setQuery,
+  } = props;
 
   const onPressClear = () => {
     setQuery("");

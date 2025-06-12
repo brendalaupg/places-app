@@ -6,6 +6,7 @@ const INITIAL_STATE: places.State = {
   suggestions: [],
   loading: false,
   error: undefined,
+  places: [],
 };
 
 export const placeSlice = createSlice({

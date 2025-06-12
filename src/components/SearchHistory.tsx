@@ -1,5 +1,5 @@
 import { Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import { Button, Icon, List, View } from "@ant-design/react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchHistory;
+export default memo(SearchHistory);

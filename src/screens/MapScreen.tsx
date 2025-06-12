@@ -12,6 +12,8 @@ import {
 import { Region } from "react-native-maps";
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
 import SearchHistory from "../components/SearchHistory";
+import SuggestionList from "../components/SuggestionList";
+import { getPredictedText } from "../utils/placeUtils";
 
 const INITIAL_REGION: Region = {
   latitude: 37.78825,
@@ -22,15 +24,16 @@ const INITIAL_REGION: Region = {
 
 const MapScreen = () => {
   const dispatch = useDispatch();
+  const suggestions = useSelector(PlaceSelectors.suggestions);
 
   const [region, setRegion] = useState<Region>(INITIAL_REGION);
+  const [query, setQuery] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const searchHistory = useSelector(PlaceSelectors.searchHistory);
 
-  const showSearchHistory = isSearching && !!searchHistory.length;
-
-  const suggestions = useSelector(PlaceSelectors.suggestions);
-  console.log(suggestions);
+  const showSearchHistory =
+    !!suggestions.length && isSearching && !!searchHistory.length;
+  const showSuggestionsList = !!suggestions.length;
 
   const searchQuery = (text: string) => {
     console.log(text);
@@ -39,7 +42,6 @@ const MapScreen = () => {
         input: text,
         locationRestriction: {
           circle: {
-            // meter
             center: {
               latitude: region.latitude,
               longitude: region.longitude,
@@ -63,6 +65,12 @@ const MapScreen = () => {
     onPressHistory;
   };
 
+  const onPressSuggestion = (suggestion: places.Suggestion) => {
+    dispatch(clearAutocomplete());
+    console.log("query for suggestion");
+    setQuery(getPredictedText(suggestion));
+  };
+
   return (
     <>
       <MapContainerView
@@ -72,6 +80,7 @@ const MapScreen = () => {
       <View style={styles.searchContainer}>
         <SafeAreaView>
           <SearchInput
+            query={query}
             isSearching={isSearching}
             onPressSearch={searchQuery}
             onPressClear={clearQuery}
@@ -79,8 +88,12 @@ const MapScreen = () => {
               dispatch(addSearchHistory(text));
             }}
             setIsSearching={setIsSearching}
+            setQuery={setQuery}
           />
           {showSearchHistory && <SearchHistory onPressHistory={searchQuery} />}
+          {showSuggestionsList && (
+            <SuggestionList onPressSuggestion={onPressSuggestion} />
+          )}
         </SafeAreaView>
       </View>
     </>

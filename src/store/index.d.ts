@@ -2,8 +2,13 @@ declare namespace places {
   interface State {
     searchHistory: string[];
     suggestions: Suggestion[];
+    places: Place[];
     loading: boolean;
     error: string | undefined;
+  }
+
+  interface Place {
+    placeId: string;
   }
 
   // autocomplete payload

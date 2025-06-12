@@ -19,7 +19,7 @@ import {
 
 const PLACES_API_BASE_URL =
   "https://places.googleapis.com/v1/places:autocomplete";
-const DEBOUNCE_TIME_MS = 500;
+const DEBOUNCE_TIME_MS: number = 500;
 
 export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
   action$
