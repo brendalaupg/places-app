@@ -39,6 +39,8 @@ declare namespace places {
     place: string;
     placeId: string;
     text: PredictionText;
+    structuredFormat: StructuredFormat;
+    types: string[];
   }
 
   interface QueryPrediction {

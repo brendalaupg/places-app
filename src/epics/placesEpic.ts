@@ -1,6 +1,14 @@
 import { Epic, ofType } from "redux-observable";
 import { RootState } from "../root";
-import { catchError, debounceTime, filter, map, of, switchMap } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+} from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import {
   autocompleteError,
@@ -38,6 +46,12 @@ export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
         },
         body: requestBody,
       }).pipe(
+        tap((response) =>
+          console.log(
+            "Autocomplete Response:",
+            JSON.stringify(response.response, null, 2)
+          )
+        ),
         map((response: AjaxResponse<places.AutocompleteResponse>) =>
           autocompleteSuccess(response.response)
         ),
