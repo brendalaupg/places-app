@@ -1,6 +1,9 @@
 declare namespace places {
   interface State {
     searchHistory: string[];
+    suggestions: Suggestion[];
+    loading: boolean;
+    error: string | undefined;
   }
 
   // autocomplete payload

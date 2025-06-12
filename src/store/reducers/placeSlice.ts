@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: places.State = {
+const INITIAL_STATE: places.State = {
   searchHistory: [],
+  suggestions: [],
+  loading: false,
+  error: undefined,
 };
 
 export const placeSlice = createSlice({
-  name: "placeSlice",
-  initialState,
+  name: "place",
+  initialState: INITIAL_STATE,
   reducers: {
     addSearchHistory: (state, action: PayloadAction<string>) => {
       state.searchHistory = [action.payload].concat(state.searchHistory);
@@ -15,8 +18,38 @@ export const placeSlice = createSlice({
     clearSearchHistory: (state) => {
       state.searchHistory = [];
     },
+    startAutoComplete: (
+      state,
+      action: PayloadAction<places.AutocompleteRequestPayload>
+    ) => {
+      state.loading = true;
+      state.error = null;
+    },
+    autocompleteSuccess: (
+      state,
+      action: PayloadAction<places.AutocompleteResponse>
+    ) => {
+      state.loading = false;
+      state.suggestions = action.payload.suggestions;
+      state.error = null;
+    },
+    autocompleteError: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { addSearchHistory, clearSearchHistory } = placeSlice.actions;
+export const {
+  addSearchHistory,
+  clearSearchHistory,
+  startAutoComplete,
+  autocompleteSuccess,
+  autocompleteError,
+} = placeSlice.actions;
 export const placeReducer = placeSlice.reducer;
+
+export type PlacesActions =
+  | ReturnType<typeof startAutoComplete>
+  | ReturnType<typeof autocompleteSuccess>
+  | ReturnType<typeof autocompleteError>;
