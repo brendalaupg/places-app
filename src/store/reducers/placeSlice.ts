@@ -13,15 +13,23 @@ export const placeSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     addSearchHistory: (state, action: PayloadAction<string>) => {
-      state.searchHistory = [action.payload].concat(state.searchHistory);
+      const query = action.payload.trim();
+      if (!query) return;
+
+      // Remove existing query (if present)
+      state.searchHistory = state.searchHistory.filter((q) => q !== query);
+      state.searchHistory.unshift(query);
+
+      // Limit to 10
+      if (state.searchHistory.length > 10) {
+        state.searchHistory = state.searchHistory.slice(0, 10);
+      }
     },
     removeSearchHistory: (state, action: PayloadAction<number>) => {
       const indexToRemove = action.payload;
-      const history = state.searchHistory;
-      state.searchHistory = [
-        ...history.slice(0, indexToRemove),
-        ...history.slice(indexToRemove + 1),
-      ];
+      if (indexToRemove >= 0 && indexToRemove < state.searchHistory.length) {
+        state.searchHistory.splice(indexToRemove, 1);
+      }
     },
     clearSearchHistory: (state) => {
       state.searchHistory = [];
