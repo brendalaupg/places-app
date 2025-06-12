@@ -9,14 +9,13 @@ import {
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
 
 interface SearchHistoryProps {
+  history: string[];
   onPressHistory: (text: string) => void;
 }
 
 const SearchHistory = (props: SearchHistoryProps) => {
-  const { onPressHistory } = props;
+  const { history, onPressHistory } = props;
   const dispatch = useDispatch();
-
-  const historyList = useSelector(PlaceSelectors.searchHistory);
 
   const onPressClear = (index: number) => {
     console.log("remove!");
@@ -45,7 +44,7 @@ const SearchHistory = (props: SearchHistoryProps) => {
 
   return (
     <View style={styles.container}>
-      <List renderHeader={"Search History"}>{historyList.map(renderItem)}</List>
+      <List renderHeader={"Search History"}>{history.map(renderItem)}</List>
     </View>
   );
 };

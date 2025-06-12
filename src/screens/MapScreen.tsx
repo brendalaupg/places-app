@@ -26,18 +26,21 @@ const INITIAL_REGION: Region = {
 const MapScreen = () => {
   const dispatch = useDispatch();
   const suggestions = useSelector(PlaceSelectors.suggestions);
+  const searchHistory = useSelector(PlaceSelectors.searchHistory);
 
   const [region, setRegion] = useState<Region>(INITIAL_REGION);
   const [query, setQuery] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const searchHistory = useSelector(PlaceSelectors.searchHistory);
 
-  const showSearchHistory =
-    !!suggestions.length && isSearching && !!searchHistory.length;
-  const showSuggestionsList = isSearching && !!suggestions.length;
+  const hasSuggestions = suggestions.length > 0;
+  const hasHistory = searchHistory.length > 0;
+  const isQueryEmpty = query.trim().length === 0;
+
+  const showSearchHistory = isSearching && isQueryEmpty && hasHistory;
+  const showSuggestionsList = isSearching && !isQueryEmpty && hasSuggestions;
+  const showMap = !isSearching;
 
   const searchQuery = (text: string) => {
-    console.log(text);
     dispatch(
       startAutoComplete({
         input: text,
@@ -56,6 +59,7 @@ const MapScreen = () => {
 
   const clearQuery = () => {
     dispatch(clearAutocomplete());
+    setQuery("");
   };
 
   const onRegionChange = (region: Region) => {
@@ -63,15 +67,26 @@ const MapScreen = () => {
   };
 
   const onPressHistory = (text: string) => {
-    onPressHistory;
+    setQuery(text);
+    setIsSearching(false);
+    dispatch(addSearchHistory(text));
+    dispatch(startSearchPlace(text));
   };
 
   const onPressSuggestion = (suggestion: places.Suggestion) => {
     const suggestionText = getPredictedText(suggestion);
-    dispatch(addSearchHistory(suggestionText));
     setQuery(suggestionText);
-
+    setIsSearching(false);
+    dispatch(addSearchHistory(suggestionText));
     dispatch(startSearchPlace(suggestionText));
+    dispatch(clearAutocomplete());
+  };
+
+  const onSubmitInput = (text: string) => {
+    setIsSearching(false);
+    dispatch(addSearchHistory(text));
+    dispatch(startSearchPlace(text));
+    dispatch(clearAutocomplete());
   };
 
   return (
@@ -80,24 +95,29 @@ const MapScreen = () => {
         onRegionChange={onRegionChange}
         initialRegion={INITIAL_REGION}
       />
-      <View style={styles.searchContainer}>
+      <View style={styles.searchContainer} pointerEvents="box-none">
         <SafeAreaView>
           <SearchInput
             query={query}
             isSearching={isSearching}
+            setQuery={setQuery}
+            setIsSearching={setIsSearching}
             onPressSearch={searchQuery}
             onPressClear={clearQuery}
-            onSubmitInput={(text) => {
-              dispatch(addSearchHistory(text));
-              dispatch(startSearchPlace(text));
-            }}
-            setIsSearching={setIsSearching}
-            setQuery={setQuery}
+            onSubmitInput={onSubmitInput}
           />
-          {/* {showSearchHistory && <SearchHistory onPressHistory={searchQuery} />}
+          {showSearchHistory && (
+            <SearchHistory
+              onPressHistory={onPressHistory}
+              history={searchHistory}
+            />
+          )}
           {showSuggestionsList && (
-            <SuggestionList onPressSuggestion={onPressSuggestion} />
-          )} */}
+            <SuggestionList
+              onPressSuggestion={onPressSuggestion}
+              suggestions={suggestions}
+            />
+          )}
         </SafeAreaView>
       </View>
     </>
@@ -114,5 +134,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%",
+    zIndex: 2,
+  },
+  dimOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.2)", // Adjust for your design
+    zIndex: 1,
   },
 });

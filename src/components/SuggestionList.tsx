@@ -7,13 +7,12 @@ import { PlaceSelectors } from "../store/selectors/placeSelectors";
 import { getPredictedText } from "../utils/placeUtils";
 
 interface SearchHistoryProps {
+  suggestions: places.Suggestion[];
   onPressSuggestion: (suggestion: places.Suggestion) => void;
 }
 
 const SuggestionList = (props: SearchHistoryProps) => {
-  const { onPressSuggestion } = props;
-
-  const suggestions = useSelector(PlaceSelectors.suggestions);
+  const { suggestions, onPressSuggestion } = props;
 
   const renderItem = (item: places.Suggestion, index: number) => {
     const suggestionText = getPredictedText(item);
