@@ -13,6 +13,7 @@ export const placeSlice = createSlice({
   name: "place",
   initialState: INITIAL_STATE,
   reducers: {
+    // search history
     addSearchHistory: (state, action: PayloadAction<string>) => {
       const query = action.payload.trim();
       if (!query) return;
@@ -35,6 +36,7 @@ export const placeSlice = createSlice({
     clearSearchHistory: (state) => {
       state.searchHistory = [];
     },
+    // auto complete
     startAutoComplete: (
       state,
       action: PayloadAction<places.AutocompleteRequestPayload>
@@ -57,6 +59,19 @@ export const placeSlice = createSlice({
     clearAutocomplete: (state) => {
       state.suggestions = [];
     },
+    // search places
+    startSearchPlace: (state, action: PayloadAction<string>) => {
+      state.loading = true;
+    },
+    searchPlaceSuccess: (state, action: PayloadAction<places.Place[]>) => {
+      state.loading = false;
+      state.places = action.payload;
+      state.error = null;
+    },
+    searchPlaceError: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -68,10 +83,16 @@ export const {
   autocompleteSuccess,
   autocompleteError,
   clearAutocomplete,
+  startSearchPlace,
+  searchPlaceSuccess,
+  searchPlaceError,
 } = placeSlice.actions;
 export const placeReducer = placeSlice.reducer;
 
 export type PlacesActions =
   | ReturnType<typeof startAutoComplete>
   | ReturnType<typeof autocompleteSuccess>
-  | ReturnType<typeof autocompleteError>;
+  | ReturnType<typeof autocompleteError>
+  | ReturnType<typeof startSearchPlace>
+  | ReturnType<typeof searchPlaceSuccess>
+  | ReturnType<typeof searchPlaceError>;

@@ -14,14 +14,20 @@ import {
   autocompleteError,
   autocompleteSuccess,
   PlacesActions,
+  searchPlaceError,
+  searchPlaceSuccess,
   startAutoComplete,
+  startSearchPlace,
 } from "../store/reducers/placeSlice";
 
-const PLACES_API_BASE_URL =
-  "https://places.googleapis.com/v1/places:autocomplete";
 const DEBOUNCE_TIME_MS: number = 500;
 
-export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
+const ROUTES = {
+  autocomplete: "https://places.googleapis.com/v1/places:autocomplete",
+  searchText: "https://places.googleapis.com/v1/places:searchText",
+};
+
+export const autocompleteEpic: Epic<PlacesActions, PlacesActions, RootState> = (
   action$
 ) =>
   action$.pipe(
@@ -38,7 +44,7 @@ export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
       };
 
       return ajax<places.AutocompleteResponse>({
-        url: PLACES_API_BASE_URL,
+        url: ROUTES.autocomplete,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,12 +52,13 @@ export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
         },
         body: requestBody,
       }).pipe(
-        tap((response) =>
-          console.log(
-            "Autocomplete Response:",
-            JSON.stringify(response.response, null, 2)
-          )
-        ),
+        // Debugging
+        // tap((response) =>
+        //   console.log(
+        //     "Autocomplete Response:",
+        //     JSON.stringify(response.response, null, 2)
+        //   )
+        // ),
         map((response: AjaxResponse<places.AutocompleteResponse>) =>
           autocompleteSuccess(response.response)
         ),
@@ -68,4 +75,46 @@ export const searchPlacesEpic: Epic<PlacesActions, PlacesActions, RootState> = (
     })
   );
 
-export const placesEpics = [searchPlacesEpic];
+export const searchTextEpic: Epic<PlacesActions, PlacesActions, RootState> = (
+  action$
+) =>
+  action$.pipe(
+    ofType(startSearchPlace.type),
+    switchMap((action) => {
+      console.log("test here");
+      return ajax({
+        url: ROUTES.searchText,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": process.env.EXPO_PUBLIC_PLACES_API_KEY,
+          "X-Goog-FieldMask":
+            "places.displayName,places.formattedAddress,places.location",
+        },
+        body: {
+          textQuery: action.payload,
+        },
+      }).pipe(
+        tap((response) =>
+          console.log(
+            "Search Results:",
+            JSON.stringify(response.response, null, 2)
+          )
+        ),
+        map((response: AjaxResponse<places.Place[]>) =>
+          searchPlaceSuccess(response.response)
+        ),
+        catchError((error: any) =>
+          of(
+            searchPlaceError(
+              error?.response?.error?.message ||
+                error?.message ||
+                "Failed to fetch text search"
+            )
+          )
+        )
+      );
+    })
+  );
+
+export const placesEpics = [autocompleteEpic, searchTextEpic];

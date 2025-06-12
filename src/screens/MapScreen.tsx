@@ -8,6 +8,7 @@ import {
   addSearchHistory,
   clearAutocomplete,
   startAutoComplete,
+  startSearchPlace,
 } from "../store/reducers/placeSlice";
 import { Region } from "react-native-maps";
 import { PlaceSelectors } from "../store/selectors/placeSelectors";
@@ -33,7 +34,7 @@ const MapScreen = () => {
 
   const showSearchHistory =
     !!suggestions.length && isSearching && !!searchHistory.length;
-  const showSuggestionsList = !!suggestions.length;
+  const showSuggestionsList = isSearching && !!suggestions.length;
 
   const searchQuery = (text: string) => {
     console.log(text);
@@ -66,9 +67,11 @@ const MapScreen = () => {
   };
 
   const onPressSuggestion = (suggestion: places.Suggestion) => {
-    dispatch(clearAutocomplete());
-    console.log("query for suggestion");
-    setQuery(getPredictedText(suggestion));
+    const suggestionText = getPredictedText(suggestion);
+    dispatch(addSearchHistory(suggestionText));
+    setQuery(suggestionText);
+
+    dispatch(startSearchPlace(suggestionText));
   };
 
   return (
