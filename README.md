@@ -1,9 +1,11 @@
 # Description
 
-- This is a simple Map app
+- This is a simple Map app that uses the new Google Places API (Autocomplete and Text search) to achieve this
 - Its writeen in Typescript, and it uses Redux with Redux toolkit to handle state management, along side Redux-Observable as the middleware
 - For design, we're using Ant Design React Native to make the UI clean and user friendly
-- Uses the new Google Places API (Autocomplete and Text search) to achieve this
+
+<img width="1002" alt="Screenshot 2025-06-13 at 8 07 31 AM" src="https://github.com/user-attachments/assets/942ae1a5-8b09-4c6e-8638-43091d00f3cf" />
+
 
 # Setup
 
@@ -50,3 +52,14 @@ yarn ios
 ```
 
 Alternatively, you may open Xcode directly, and start the active scheme by clicking on the "Run" button
+
+
+# Limitations & Future Enhacements
+- Due to time constaints, some UX was left out:
+  - Zoom into Region with markers, when the search function finds places to pin on the map
+  - displaying error / empty state when searching for results
+  - clearing the markers
+- In addition, here would we some additional functions for future enhancements:
+  - network connectivity banner
+  - description card for places (photo, full address, type of place)
+  - tags (e.g. Restaurant, Gas Station, etcs) for enhancing the search results
